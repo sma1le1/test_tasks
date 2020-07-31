@@ -1,30 +1,24 @@
-/*	a. Для заданного списка товаров получить названия всех категорий, в которых представлены товары; 
-	products - 5, 6, 8, 11
-*/
+Р”Р»СЏ Р·Р°РґР°РЅРЅРѕРіРѕ СЃРїРёСЃРєР° С‚РѕРІР°СЂРѕРІ РїРѕР»СѓС‡РёС‚СЊ РЅР°Р·РІР°РЅРёСЏ РІСЃРµС… РєР°С‚РµРіРѕСЂРёР№, РІ РєРѕС‚РѕСЂС‹С… РїСЂРµРґСЃС‚Р°РІР»РµРЅС‹ С‚РѕРІР°СЂС‹  - 5, 6, 8, 11
+
 
 	SELECT DISTINCT id, name FROM categories ctg LEFT JOIN product_to_categories ptc ON ptc.categ_id = ctg.id WHERE ptc.product_id IN('5','6','8','11')
 
 
-
-/*	b. Для заданной категории получить список предложений всех товаров из этой категории и ее дочерних категорий;
-	category - 2
- */
+Р”Р»СЏ Р·Р°РґР°РЅРЅРѕР№ РєР°С‚РµРіРѕСЂРёРё РїРѕР»СѓС‡РёС‚СЊ СЃРїРёСЃРѕРє РїСЂРµРґР»РѕР¶РµРЅРёР№ РІСЃРµС… С‚РѕРІР°СЂРѕРІ РёР· СЌС‚РѕР№ РєР°С‚РµРіРѕСЂРёРё Рё РµРµ РґРѕС‡РµСЂРЅРёС… РєР°С‚РµРіРѕСЂРёР№ - 2
 
 	SELECT prd.id, prd.name FROM products prd LEFT JOIN product_to_categories ptc ON ptc.product_id = prd.id WHERE ptc.categ_id = '2' UNION SELECT prd.id, prd.name 	FROM products prd LEFT JOIN product_to_categories ptc ON ptc.product_id = prd.id WHERE ptc.categ_id IN(SELECT id FROM categories WHERE parent_id = '2')
 	
 
 
-/*	c. Для заданного списка категорий получить количество предложений товаров в каждой категории; 
-	categories '4','7','11','9'
-*/
+Р”Р»СЏ Р·Р°РґР°РЅРЅРѕРіРѕ СЃРїРёСЃРєР° РєР°С‚РµРіРѕСЂРёР№ РїРѕР»СѓС‡РёС‚СЊ РєРѕР»РёС‡РµСЃС‚РІРѕ РїСЂРµРґР»РѕР¶РµРЅРёР№ С‚РѕРІР°СЂРѕРІ РІ РєР°Р¶РґРѕР№ РєР°С‚РµРіРѕСЂРёРё
+
 	SELECT categ_id, COUNT(product_id) p_count FROM product_to_categories
 	WHERE categ_id IN('4','7','11','9') GROUP BY categ_id
 
 
 
-/*	d. Для заданного списка категорий получить общее количество уникальных предложений товара;
-	categories '4','7','11','9'
-*/
+Р”Р»СЏ Р·Р°РґР°РЅРЅРѕРіРѕ СЃРїРёСЃРєР° РєР°С‚РµРіРѕСЂРёР№ РїРѕР»СѓС‡РёС‚СЊ РѕР±С‰РµРµ РєРѕР»РёС‡РµСЃС‚РІРѕ СѓРЅРёРєР°Р»СЊРЅС‹С… РїСЂРµРґР»РѕР¶РµРЅРёР№ С‚РѕРІР°СЂР° '4','7','11','9'
+
 	SELECT SUM(p_count) p_sum FROM (
 		SELECT ptc.categ_id, COUNT(product_id) p_count FROM product_to_categories ptc
 		WHERE ptc.categ_id IN('4','7','11','9') 
